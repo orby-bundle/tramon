@@ -9,6 +9,10 @@
 
 $ErrorActionPreference = "Stop"
 
+# Run from the script's directory (elevated RunAs often starts in System32)
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location $ScriptDir
+
 # 1. Require Administrator privileges
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) {
@@ -49,7 +53,7 @@ $pipExe = Join-Path $VENV_DIR "Scripts\pip.exe"
 $pythonExe = Join-Path $VENV_DIR "Scripts\python.exe"
 
 Write-Host "3/4 Installing dependencies inside the tramon virtual environment..." -ForegroundColor Cyan
-& $pipExe install --no-cache-dir --upgrade pip -q
+& $pythonExe -m pip install --no-cache-dir --upgrade pip -q
 & $pipExe install --no-cache-dir -r requirements.txt -q
 
 # 5. Run the application

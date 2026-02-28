@@ -39,7 +39,8 @@ Once running, the script will automatically open your default browser to `http:/
 ## Architecture
 
 - `agent.py`: The host agent responsible for capturing traffic. It detects the operating system and then normalizes accordingly packets or ETW events into a canonical JSON format containing source/destination IPs, ports, bytes, protocol, and process info.
-- `dashboard.py`: Spawns the agent as a subprocess and spins up a local HTTP server to receive the agent's batches. It aggregates the stats in-memory and serves the web UI. 
+- `dashboard.py`: Spawns the agent as a subprocess and spins up a local HTTP server to receive the agent's batches. It aggregates the stats in-memory and serves the web UI.
+- `logger.py`: Writes aggregated traffic flows to hourly CSV logs under `logs/YYYY.MM/DD/HH.csv`; controlled by `DISABLE_CSV_LOG` and `LOG_DIR` environment variables.
 
 ## License
 

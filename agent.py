@@ -13,6 +13,7 @@ import json
 import time
 import threading
 import subprocess
+import logger
 
 # -----------------------------------------------------------------------------
 # Config (env)
@@ -165,6 +166,7 @@ def _take_batch():
 def on_batch(batch):
     if not batch:
         return
+    logger.append_events_to_csv(batch)
     if CONTAINER_URL:
         try:
             import urllib.request
