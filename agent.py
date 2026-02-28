@@ -2,11 +2,8 @@
 Host agent: captures live traffic on Windows (ETW) or Linux/macOS (Scapy),
 normalizes to a single schema and batches.
 
-When the app is containerized: the CONTAINER runs the receiver (no privileges needed).
-The AGENT runs on the host (this script). Run it with admin/sudo so it can capture:
-
-  Windows: run scripts/run_agent_admin.ps1 or "Run as Administrator" then python agent.py
-  Linux/macOS: run scripts/run_agent.sh or sudo python3 agent.py
+  Windows: run scripts/run.ps1
+  Linux/macOS: run scripts/run.sh
 """
 
 import os

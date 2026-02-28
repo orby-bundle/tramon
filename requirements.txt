@@ -1,0 +1,6 @@
+# agent.py: packet capture on Linux/macOS
+scapy
+# agent.py: process names on macOS (optional but used when available)
+psutil
+# agent.py: ETW capture on Windows only (optional; skipped on Linux/macOS)
+pywintrace ; sys_platform == 'win32'

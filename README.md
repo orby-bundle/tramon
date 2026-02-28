@@ -16,18 +16,23 @@ This is a lightweight, cross-platform network traffic monitoring utility.
 
 ## Prerequisites
 
-The utility will be Dockerized in the next update. For now follow the comman line hints.
+The utility automatically sets up its own Python virtual environment and installs required dependencies (`scapy`, `psutil`, Windows only `pywintrace`).
 
 ## Usage
+To start the utility, use the *.sh script for Linux/macOS and *.ps1 script for Windows. 
 
-To start both the capture agent and the web dashboard, run:
+They will automatically request the necessary privileges (Admin/root for packet capture), create an isolated Python virtual environment, install dependencies, and launch the application.
 
+**On Windows:**
+Run the PowerShell script. It will prompt for Administrator privileges automatically if needed:
+```powershell
+.\run.ps1
+```
+
+**On Linux / macOS:**
+Run the shell script. It will prompt for your `sudo` password:
 ```bash
-# On Windows (Run as Administrator)
-python dashboard.py
-
-# On Linux/macOS (Requires root/sudo for packet capture)
-sudo python3 dashboard.py
+./run.sh
 ```
 Once running, the script will automatically open your default browser to `http://127.0.0.1:8787` to display the traffic dashboard.
 

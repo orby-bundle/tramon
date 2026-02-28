@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Single script to run the agent + a minimal HTTP server so you can view
-traffic in the browser without Docker. Opens the dashboard at http://127.0.0.1:8765
+Tramon dashboard: a minimal HTTP server to monitor traffic in the browser.
+Opens locally at http://127.0.0.1:8787
 
-Usage: python run_dashboard.py
-  (Run as Administrator on Windows, or sudo on Linux/macOS, so the agent can capture.)
+Usage
+  Windows: run scripts/run.ps1
+  Linux/macOS: run scripts/run.sh
 """
 import json
 import os
