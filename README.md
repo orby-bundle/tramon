@@ -11,7 +11,7 @@ This is a lightweight, cross-platform network traffic monitoring utility.
   - **Linux / macOS:** Uses `scapy` for packet capture.
 - **Process Mapping:** Automatically links connections and bandwidth to the specific application (e.g., Chrome, SSH, Opera).
 - **Real-Time Web UI:** An embedded HTTP server displays in decreasing order top 500  traffic flows, auto-refreshing every second.
-- **Local IP Filtering:** Easily filter traffic by your host's specific local interfaces.
+- **Local IP & Gateway Support:** Intelligently groups traffic by local interfaces and automatically detects private subnets (e.g., `10.x.x.x`, `192.168.x.x`). This ensures traffic from workstations is properly tracked and organized into dedicated tabs even when `tramon` is run on a central gateway server.
 - **Reverse DNS:** Background workers resolve when possible remote IP addresses to their hostnames to make traffic readable.
 
 ## Prerequisites

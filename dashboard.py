@@ -90,6 +90,18 @@ def _protocol_label(protocol, port):
 def _is_localhost(ip):
     return ip in ("127.0.0.1", "::1") or (ip and ip.startswith("127."))
 
+def _is_private_ip(ip):
+    if not ip: return False
+    if ip.startswith("10.") or ip.startswith("192.168.") or ip.startswith("127."):
+        return True
+    if ip.startswith("172."):
+        try:
+            second = int(ip.split(".")[1])
+            return 16 <= second <= 31
+        except:
+            pass
+    return False
+
 def _ingest_events(events):
     with _stats_lock:
         for ev in events:
@@ -102,8 +114,8 @@ def _ingest_events(events):
             src_port = int(ev.get("src_port") or 0)
             dst_port = int(ev.get("dst_port") or 0)
             
-            is_src_local = src_ip in _HOST_IPS
-            is_dst_local = dst_ip in _HOST_IPS
+            is_src_local = src_ip in _HOST_IPS or _is_private_ip(src_ip)
+            is_dst_local = dst_ip in _HOST_IPS or _is_private_ip(dst_ip)
             
             if is_src_local and not is_dst_local:
                 local_ip = src_ip
