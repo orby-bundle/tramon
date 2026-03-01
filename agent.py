@@ -475,7 +475,7 @@ def _run_capture_unix():
 
         sys.exit(1)
 
-    iface = None if INTERFACE == "any" else INTERFACE
+    iface = "any" if INTERFACE == "any" else INTERFACE
     threading.Thread(target=_batching_loop, daemon=True).start()
     sniff(iface=iface, prn=lambda p: _add_event(_normalize_packet(p)), store=False)
 
