@@ -117,6 +117,16 @@ def _ingest_events(events):
             is_src_local = src_ip in _HOST_IPS or _is_private_ip(src_ip)
             is_dst_local = dst_ip in _HOST_IPS or _is_private_ip(dst_ip)
             
+            if is_src_local and not is_dst_local:
+                local_ip = src_ip
+                remote_ip = dst_ip
+            elif is_dst_local and not is_src_local:
+                local_ip = dst_ip
+                remote_ip = src_ip
+            else:
+                local_ip = dst_ip
+                remote_ip = src_ip
+
             # Usually the service port is the lower port, or 443 if present
             if src_port == 443 or dst_port == 443:
                 port = 443
@@ -125,31 +135,17 @@ def _ingest_events(events):
             else:
                 port = max(src_port, dst_port)
 
-            entries_to_add = []
-
-            if is_src_local and not is_dst_local:
-                entries_to_add.append((src_ip, dst_ip))
-            elif is_dst_local and not is_src_local:
-                entries_to_add.append((dst_ip, src_ip))
-            elif is_src_local and is_dst_local:
-                # Both are local (e.g. LAN to LAN or VM to Host). 
-                # Add an entry for BOTH perspectives so each gets a tab.
-                entries_to_add.append((src_ip, dst_ip))
-                if src_ip != dst_ip:
-                    entries_to_add.append((dst_ip, src_ip))
-
-            for (local_ip, remote_ip) in entries_to_add:
-                if not remote_ip or _is_localhost(remote_ip):
-                    continue
-                key = (local_ip, remote_ip, port, protocol)
-                if key not in _stats:
-                    _stats[key] = {"bytes": 0, "count": 0, "process": process, "pid": pid}
-                _stats[key]["bytes"] += b
-                _stats[key]["count"] += 1
-                if process:
-                    _stats[key]["process"] = process
-                if pid:
-                    _stats[key]["pid"] = pid
+            if not remote_ip or _is_localhost(remote_ip):
+                continue
+            key = (local_ip, remote_ip, port, protocol)
+            if key not in _stats:
+                _stats[key] = {"bytes": 0, "count": 0, "process": process, "pid": pid}
+            _stats[key]["bytes"] += b
+            _stats[key]["count"] += 1
+            if process:
+                _stats[key]["process"] = process
+            if pid:
+                _stats[key]["pid"] = pid
 
 def _resolve_rdns(ip):
     """Reverse DNS with timeout. Returns hostname or ''."""
